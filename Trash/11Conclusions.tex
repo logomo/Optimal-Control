@@ -1,0 +1,43 @@
+\chapter{Conclusions}
+
+Conclusion wrap-up previously discussed topics and outlines future improvements and challenges of the proposed approach. In additional to the goal of developing a mathematical framework for practical obstacle avoidance, an engineering goal of building a functional prototype of the aerial vehicle capable of autonomous obstacle avoidance will also be pursued.  Various engineering and research challenges are expected. The topic is separated into the analysis of related areas, development of new algorithms, and software implementation in Dune and Neptus to test developments in simulations and flight tests. The main research goal is to develop feasible reachability  set calculation method in real time (\ref{eq:finalfunction}). Reachable set $\mathscr{R}\subset(\mathscr{F}-\mathscr{O})$ defines safety and controlability  margins. Most important is to achieve invariance of controlled UAV $\mathscr{R}$. Initial goal is to construct a controlled reachable set in known space which has weak invariance, more ambitious goal is to construct control strategy $\Omega$ and voting algorithm $\gamma$, that enables strong invariance within given reach set.
+
+\begin{equation}\label{eq:finalfunction}
+    \mathscr{R}=f(\vec{x},\mathscr{F},\mathscr{O},\gamma,\Omega)
+\end{equation}
+
+\section{Analysis of related areas}
+Some initial analysis have been done in related work chapter and background chapter, where state of art and basic knowledge is summarized. Main focus of this approach should be impact on \textit{controlability}, system $\dot{x}=f(x,u,t)$ should be controllable in reachable space $\mathscr{R}$. Conflict between calculated reachable space and real controllable space must be minimal. On the other hand \textit{flight efficiency} is crucial in obstacle avoidance. Criterion function $J^*$ must be defined to contain safety measurements, fuel efficiency and additional rules defined for non-segregated airspace. Various feasible \textit{strategies for near real-time reachability set calculation} needs to be compared. Most feasible method in terms of speed and precision needs to be selected and improved for most accurate reachable set estimation. There are secondary topics, which are not main objective of research, but they still have critical impact on calculation time. Main issue is compact obstacle representation, to apply any greedy approach or even evolutionary approach obstacle set $\mathscr{O}$ must be compact as much as possible. Intruder estimation is omitted in analysis, it can be added if there will be time to spare.
+
+\section{Development of UAV for flight tests}
+The research developments will be flight tested on a UAV which will also be developed in the scope of this work. 
+Partial results have been developed by Honeywell (LiDAR sensor), NTNU UAV LAB (Flying platform, RTK GPS) and by LSTS FEUP group (base station,LSTS tool-chain). The implementation will include the following steps:
+\begin{enumerate}
+    \item \textit{Build hardware platform for testing} - problems with RTK GPS integration which is not native element in LSTS base station, this issue can be addressed by custom code provided by NTNU.
+    \item \textit{Development of obstacle clustering and recognition} - obstacle clustering in known world $\mathscr{F}$ can be problematic, because of huge amount of data constantly flowing in local coordinate frame format. This issue has been addressed by various works mentioned in related work. 
+    \item \textit{Development of data fusion from other sensors and databases} - obstacle database has not been decided yet, therefore data fusion from databases is still open. Data fusion from various scan runs is interesting, despite fact, that RTK GPS provides sufficient accuracy, method to remove double surface detection. Checking every new point against existing estimated surfaces in compact form.
+    \item \textit{Reach set calculation framework development} - this part is main concern of the work, reach set $\mathscr{R}$ needs to be continuously estimated and calculated. Initial framework have been presented in section \ref{sec:smartinvariance} and tested in section \ref{s:simulationruns}.
+    \item \textit{Optimal control strategy development} - various optimal control strategy $\Omega$ needs to be tested and one which will most support voting algorithm $\gamma$. Control strategy is always following some goal, like optimization of cost function $J*$. Various Artificial Intelligence approaches needs to be tested, inspiration can be found in game theory, when adversary behaviour is taken into account.
+    \item \textit{Dune and Neptus implementation and integration} - this is continuous activity, because all previously mentioned artifacts needs to be incorporated into Dune or Neptus environment.
+\end{enumerate}
+
+
+
+\section{Continuous testing of new approach}
+A detailed test plan is premature at this stage. An outline of the main testing stages is provided next:
+\begin{enumerate}
+    \item Simulation: 2D environment.
+    \item Simulation: 3D space environment.
+    \item Flight tests: sensor fusion.
+    \item Flight tests: obstacle avoidance with synthetic obstacles.
+    \item Flight tests: integrated detection and avoidance.
+    \item Flight tests: integrated solution.
+\end{enumerate}
+
+\section{Generalization of reach sets obstacle avoidance}
+The main theoretical goal of the work is to developed the theoretical foundations for practical obstacle avoidance based on techniques from reachability, invariance, and approximations. Preliminary results have been presented in theorem \ref{theorem1}. More specifically the following items will be addressed:
+\begin{enumerate}
+    \item \textit{Mathematical framework} - must be developed in order to address complex issues, this framework includes approximation, integer computation, set logic and effective data representation. Some essential artifacts like control strategy $\Omega$, voting algorithm $\gamma$ or obstacle set $\mathscr{O}$ and its properties have been defined. Because problem of obstacle avoidance is complex hybrid system with parallel runs and switching mode, general model for its representation needs to be developed. Mathematical framework is crucial for future field development, because it can separate issues which can be solved later. 
+    \item \textit{Reachability theorem}  - overview of work has been given in section \ref{sec:obstacleavoidancetheorem}, this theorem is based on existence of artifacts to restrain vehicle control possibilities via control strategy $\Omega$ and to determine best movement to avoid obstacle via voting algorithm $\gamma$ seems to be sufficient to achieve weak or strong invariance. The main issue which needs to be addressed in reachability theorem is to address issue of continuous time $t$ when controlled system is evolving (vehicle is moving) and between discrete time $t_{step}$ when decision is made. Problematic is a formulation of time continuous control strategy $\Omega$ which will respect space constraints of $\vec{x}(t)$ in time $[\tau, \tau + t_{step})$. Other problem which arises is formulation of adaptive voting algorithm $\theta$ which can persist trough multiple decisions or adapt during execution of previous decision.
+\end{enumerate}
+

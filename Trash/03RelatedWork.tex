@@ -1,0 +1,55 @@
+\chapter{Related work}
+This chapter discusses the state of art articles in the field of reactive obstacle detection and avoidance based on LiDAR technology. 
+
+
+\section{Obstacle detection and sensor fusion}
+Obstacle avoidance relies heavily on the detection of obstacles and the detection of obstacles relies on sensors and on sensor fusion algorithms. This section is focused on LiDAR sensor technology, which may be complemented by other sensors.   
+
+\subsection{Key issues}
+Sensor fusion is critical issue in successful obstacle avoidance. The key problems concern statistical errors and data representation \cite{gardi2014real}, \cite{ramasamy2014towards}. Key issues in sensor fission are:
+\begin{enumerate}
+    \item \textit{Data representation} - raw data transformation and integration, various sources have different snipping time and various data density, for example ADS-B output is thin and updates periodically, LiDAR output is thick dense and continious flow.
+    \item \textit{Data processing time} - some methods used for obstacle identification from geographical applications can not be used, because data in known space $\mathscr{F}$ are not complete and computation capabilities of on-board computer are limited (for example 
+    resolving various types of objects on medium sized LiDAR maps takes 2-6 hour to execute).
+\end{enumerate}
+
+\subsection{Related work}
+These issues have been addressed in overview article by Ramasamy and Sabatiny, whom successfully implemented LOAM data fusion system for electrical wire inspection \cite{ramasamy2014avionics}. Article presented various technologies and  reference system architecture based on Boolean decision logic was Author pinpointed major problems to solve for an effective DAA functionality were presented.  Uncertainty analysis and error modelling were performed to obtain the overall uncertainty volume associated with the intruder track. 
+The analytical models required for a unified approach to cooperative and non-cooperative DAA needs to be developed to address calculation time shortcoming. A detailed simulation case study was presented and it is concluded that the proposed DAA system is effective when cooperative/non-cooperative detection is performed from ranges in excess of 500 metres demonstrating the feasibility of the proposed DAA solution with state-of-the art  sensors. In future research, integration of the DAA system with other avionics and ground-based systems for Intent Based Operations \cite{gardi20134,ramasamy2013novel} needs to be performed to achieve autonomous obstacle avoidance. In particular, in order to meet the Communication, Navigation and Surveillance integrity requirements, a suitable Avionics-Based Integrity Augmentation architecture will be employed \cite{sabatini2013novel,gardi2014real}. Presented approach can be implemented on other platforms by using by extensive effort \cite{burston2014reverse}.  
+
+
+Critical analysis of sense and avoid technologies and an overview of different sensor combination in coverage and robustness aspects is given by Muraru in \cite{muraru2011critical}.
+In order to be able to evaluate still in greater depth the performance of sensors and object recognition algorithms for the Sense and Avoid task, the subject will have to be treated in more detail. Thus, more factors will have to be considered and changing weather conditions will have to be experimentally analyzed. Sensor technology will have to be extended as well. For instance, up to now only poor experience exists from automatically exploiting infrared sensor data for the Sense and Avoid task. Cameras allow only for moderate angular resolution. Similar processing algorithms as for the visible domain could be used for object recognition in infra red image data. Sensor and processing capabilities will have to be cast into parametrized formal models. To verify the obtained generalizations after the variation of parameters in simulation runs, experimental data will be needed again. In this respect, there is also the issue of the environmental impact on equipment. Thus, the equipment resilience is therefore an issue as well. Last but not least, the fusion of data and in particular processing results from sensors, which are based on different and complementary physical properties, e.g. optronic sensors with LiDar, will have to be tackled in practice. 
+
+
+First issue which needs to be addressed is \textit{obstacle representation} in real time, because of high density of LiDAR data gathered in real time, more compact representation of obstacles should be given. Hebecker work \cite{hebecker2015model} divided sensor range into cells, where one cell was defined as $[d_{start}, d_{end}, \theta_{start}, \theta_{end}, \varphi_{start}, \varphi_{end}]$, where pair of $d$ denotes range of LiDAR sensor, par of $\theta$ horizontal angle range and par of $\varphi$ vertical angle range. This technique was tested on a platform \cite{adolf2009unmanned} to prove feasibility of real time accessible space assessment. Nevertheless the problem of this approach is that if there exists one point scanned by LiDAR in given cell, the whole cell is marked as occupied. This approach is meant to be used as last resort when no feasible real time obstacle recognition is in place.
+
+Sensor fusion requires the integration of data streams coming from different sensors, some of which may produce results in body-fixed coordinates, while other produce results in global coordinates. Coordinated transformations are then necessary to fuse these different data streams. This is an additional source of errors. For example ADS-B  transmits UAV position with some error in global coordinates, LiDAR transmits data in local coordinate frame. GNSS precise position data may be used to minimize measurement errors in global coordinates. Various approaches for precise geo-location of plane in real time have been developed \cite{sabatini2013novel,sabatini2013new1}.  One example concerns the use of GPS data with RTK corrections \cite{sabatini2013new2}.
+
+
+Most feasible software and hardware solution to be used in our conditions seems to be solution from ITK NTNU UAVLAB group, which have been used for precise cooperative flight \cite{skulstad2015net,skulstad2015autonomous}.
+
+
+One of the problems of LiDAR sensor technology concerns the false positive detections, due disperse matter in flying space (icing, fog). To address these issue cameras in mono or stereo settings are used to filter possible detection issues \cite{lai2012see}. These issues have been brought up by Sabatini in his previous work \cite{sabatini2010airborne}. Other sensors like ADS-B can be used for improvement of LiDAR based obstacle avoidance. A case study using several sensors in combination to complement is described in \cite{cornic2011sense}. 
+Other problem accompanying LiDAR detection system is cost of the system. Cheap sensors can be effective in obstacle definition, if different types of sensors covers complement each other. This is discussed in Sabatini \cite{sabatini2013low}.
+
+\subsection{Conclusion}
+Open topics in sensor fusion are: 
+\begin{enumerate}
+    \item \textit{Continuous building of known space} -each approach in sensor fusion mentioned in this work is doing periodical update based on buffered data. Streamline processing and avoidance strategy execution is mandatory for optimal SAA execution.
+    \item \textit{Compact LiDAR representation} - Compact representation of data have multiple problems ranging from streamline processing and false positive detections.
+\end{enumerate}
+
+
+\section{Obstacle avoidance}
+ Avoidance principle and reachable space calculation have been taken from \cite{bekris2010avoiding}. Motion planing for fixed wing vehicle can be used as an inspiration in work of Gross \cite{gros2011motion}, motion have been predicted using motion primitives bounded in one maneuver. A general overview of planning algorithms can be given by Lavalle book \cite{lavalle2006planning}. Other approaches for real time obstacle avoidance has been given by Lai works \cite{lai2011board,lai2011real}.
+
+Many field works make the assumption that autopilot is capable to execute a sequence of input commands for efficient obstacle avoidance. This assumption needs to be removed in case of real obstacle avoidance. Real maneuverability and controlability using autopilot module in commercial platform have been demonstrated in \cite{meier2012pixhawk}.
+
+Encounter modeling is impacting sense and avoid system greatly, for successful avoidance maneuver planning, accurate and fast approximation of encounter movement is needed. This topic is out of initial scope of future work, but work of Kochenderfer gives simple overview of problematic \cite{kochenderfer2008encounter}.
+
+Optimal obstacle avoidance is one of the key challenges in current state of art. Various approaches for optimal obstacle avoidance have been presented, for example \cite{prevost2011uav} revolves around trajectory optimization in view of mission plan. There is not an generally accepted cost function for optimal obstacle avoidance now.
+
+Reusable navigation software is mandatory in modern applications, there has been multiple applications like ROS \cite{meyer2012comprehensive} or LSTS \cite{pinto2013lsts} Other view has been presented by Sabatini in article \cite{sabatini2014navigation}
+
+

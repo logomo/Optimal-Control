@@ -1,0 +1,76 @@
+\chapter*{Nomenclature}
+\noindent
+This chapter describe used symbols (\ref{tab:symbols}), acronyms (\ref{tab:acronym}) and organizations (\ref{tab:organizations}) mentioned in work. It is recommended to review this chapter before reading work.
+\begin{table}[H]
+    \centering
+    \begin{tabularx}{\textwidth}{|l||X|}
+    \hline
+    Acronym & Meaning\\ \hline\hline
+    UAV & Unmanned Aerial Vehicle\\ \hline
+    UAS & Unmanned Autonomous System(including naval vehicles)\\ \hline
+    RPAS & Remotely Piloted Aerial System(lesser degree of autonomy)\\ \hline
+    LOS & Line Of Sight\\ \hline
+    VLOS & Visual Line Of Sight\\ \hline
+    BLOS & Behind Line Of Sight\\ \hline
+    SAA & Sense And Avoid\\ \hline
+    DAA & Detect And Avoid \\ \hline
+    CD\&R & Collision Detection and Resolution\\ \hline
+    RTK & Real-Time Kinematik\\ \hline
+    GPS & Global Positioning System\\ \hline
+    IMU & Internal Measurement Unit\\ \hline
+    LiDAR &  Light Detection and Ranging \\ \hline
+    ADS-B & Automatic Dependent Surveillance – Broadcast\\ \hline
+    LTI & Linear Time Invariant\\ \hline
+    LTV & Linear Time Varying\\ \hline
+    NTI & Non-linear Time Invariant\\ \hline
+    NTV & Non-linear Time Varying\\ \hline
+    \end{tabularx}
+    \caption{List of Acronyms}
+    \label{tab:acronym}
+\end{table}
+
+\begin{table}[H]
+    \centering
+    \begin{tabularx}{\textwidth}{|l||X|}
+    \hline
+    Acronym & Organization name \\ \hline\hline
+    EASA & European Aviation Safety Agency \\ \hline 
+    JARUS&  Joint Authorities for Regulation of Unmanned Systems\\ \hline
+    LSTS & Laboratório de Sistemas e Tecnologia Subaquática\\ \hline
+    FEUP &Faculdade de Engenharia da Universidade do Porto\\ \hline
+    ITK & Institutt for teknisk kybernetikk NTNU\\ \hline
+    NTNU& Norges teknisk-naturvitenskapelige universitet\\ \hline
+    IST & Instituto Superior Técnico - Universidade de Lisboa\\ \hline
+    HWI & Honeywell international\\ \hline
+    \end{tabularx} 
+    \caption{List of Organizations}
+    \label{tab:organizations}
+\end{table}
+
+\begin{table}[H]
+    \centering
+    \begin{tabularx}{\textwidth}{|l||X|}
+    \hline
+    Symbol & Explanation \\ \hline\hline
+    $A,B,C,D,\dots$ & Capital letters are used for matrixes\\\hline
+    $A(\dots),B(\dots),\dots$ & Functional matrixes, $(\dots)$ denotes parameters\\\hline
+    $f(\dots),g(\dots),\dots$ & Vector or scalar functions $(\dots)$ denotes parameters\\\hline
+    $\vec{f}(\dots),\vec{g}(\dots),\dots$ & Implicit vector functions, when equation contains both types of scalar and vector functions.\\\hline
+    $t,x,y,z,\dots$ & Vector or scalar coeficients \\\hline
+    $\vec{x},\vec{o},\vec{g},\dots$ & Implicit vectors, when function containst both vec types of scalar and vector coeficients.\\\hline
+    $\theta,\varphi$ & Greek letters denoting angles in radians\\\hline
+    $\mathscr{O}$ & Set of known obstacles $o_i\in\mathscr{O}$ where each obstacle $o_i$ is parametrized.\\\hline
+    $\mathscr{D}$ & Threat set of obstacles endangering vehicle\\\hline
+    $\mathscr{R},R$ & Reach set (Invariant if not stated other), defines safe space where vehicle can move without intermediate or future crash.\\\hline
+    $\mathscr{F}$ & Partially known space, space examined by vehicle during flight.\\\hline
+    $\mathscr{O},\bar{\mathscr{O}}$ & Obstacle space, space occupied by obstacle.\\\hline
+    $\mathscr{U},\bar{\mathscr{U}}$& Uncertain space, space hidden behind obstacle or unexplored space.\\\hline
+    $\omega$ & Control input function, defining current control input of system\\\hline
+    $\Omega$ & Control strategy, set of continuous control input functions $\omega_i\in\Omega$ which does not lead vehicle to crash in known space $\mathscr{F}$\\\hline
+    $\gamma$ & Voting algorithm, deciding most feasible control input $\omega_i$ from control strategy $\Omega$\\\hline
+    \textnormal{atan2} & $\arctan$ function normalizing angle around adjacent line in interval $(-\pi,\pi]$\\ \hline 
+
+    \end{tabularx} 
+    \caption{List of symbols}
+    \label{tab:symbols}
+\end{table}

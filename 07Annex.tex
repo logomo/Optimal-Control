@@ -1,0 +1,132 @@
+\chapter*{Annex}\noindent
+\noindent This chapter contains required linear algebra supplements used in this work for estimation, projection and rotation in euclidean space. 
+
+3-dimensional Cartesian space gives us an x, y, and z axis (describing position based on horizontal placement, vertical placement, and depth respectively). The coordinates for any point within this space are shown as a tuple $(x,y,z)$. Coordinate system used this work will be viewed as right-handed system (thumbs points at positive direction of x-axis, index finger is pointing to positive direction of y-axis, then positive  direction of z axis is shown by remaining fingers).
+
+Euler have worked on universal rotation theorem which was presented in \cite{euler1775formulae}. Rigid body dynamics and rotation matrices have been proposed in book by Schaub \cite{schaub2003analytical}. Local coordinates are used, where plane center of gravity is used as center point and plane heading is oriented to X axis. This local coordinate system is called Euler Normalized Unit-frame (ENU). Rotation matrices are used to transform between two displaced coordinate systems. Roll angle $\alpha$ rotation is defined around X-axis by matrix (\ref{eq:rollTransformationMatrix}) on YZ-plane. Pitch angle $\beta$ rotation matrix is defined around Y-axis by matrix (\ref{eq:pitchTransformationMatrix}) on XZ plane. Yaw angle $\gamma$ rotation matrix is defined around Z axis by matrix (\ref{eq:yawTranformationMatrix}) on XY plane.
+
+\begin{equation}\label{eq:rollTransformationMatrix}
+    R_{YZ} = R_\alpha =
+    \begin{bmatrix}
+        1 & 0 & 0\\
+        0 & \cos(\alpha) & -\sin(\alpha)\\
+        0 & \sin(\alpha) & \cos(\alpha)
+    \end{bmatrix}
+\end{equation}
+\begin{equation}\label{eq:pitchTransformationMatrix}
+    R_{XZ} = R_\beta =
+    \begin{bmatrix}
+        \cos(\beta) & 0 & \sin(\beta)\\
+        0 & 1 & 0\\
+        -\sin(\beta) & 0 & \cos(\beta)
+    \end{bmatrix}
+\end{equation}
+\begin{equation}\label{eq:yawTranformationMatrix}
+    R_{XY} = R_\gamma = 
+    \begin{bmatrix}
+        \cos(\gamma) & -\sin(\gamma) & 0 \\
+        \sin(\gamma) & \cos(\gamma) & 1 \\
+        0 & 0 & 1
+    \end{bmatrix}
+\end{equation}
+Final rotation matrix in XYZ ordered space is given by equation(\ref{eq:xyzspaceRotationMatrix}).
+\begin{equation}\label{eq:xyzspaceRotationMatrix}
+    \begin{aligned}
+        R_{XYZ}  =& R_{\alpha\beta\gamma} =  R_{XY} * R_{XZ} * R_{YZ} = R_\gamma * R_\beta *R_\alpha\\
+         =& 
+         \small
+         \begin{bmatrix}
+            \cos\beta\cos\gamma & \cos\gamma\sin\alpha\sin\beta - \cos\alpha\sin\gamma & \sin\alpha\sin\gamma + \cos\alpha\cos\gamma\sin\beta \\
+            \cos\beta\sin\gamma & \cos\alpha\cos\gamma + \sin\alpha\sin\beta\sin\gamma & \cos\alpha\sin\beta\sin\gamma - \cos\gamma\sin\alpha \\
+            -\sin\beta & \cos\beta\sin\alpha & \cos\alpha\cos\beta 
+         \end{bmatrix}
+         \normalsize
+    \end{aligned}
+\end{equation}
+To keep solution numerically stable and rotations numerically stable gimbal lock prevention is necessary \cite{kramer1977gyro}. Gimbal lock occurs when one of matrices (\ref{eq:rollTransformationMatrix}, \ref{eq:pitchTransformationMatrix}, \ref{eq:yawTranformationMatrix}) is singular or final matrix for XYZ rotation is singular (\ref{eq:xyzspaceRotationMatrix}). Gimbal lock leads to loose of one or more degree of freedom, depending on rank and space dimension of singular matrix. To prevent gimbal lock it is necessary to introduce mechanism to check if rotation matrix is regular. For this purpose normative reset function is introduced:
+\begin{equation}
+    \left [ \alpha, \beta ,\gamma \right ]^T = f(t,\alpha^-,\beta^-,\gamma^-), \quad \textnormal{norm}(R_{\alpha\beta\gamma})=3
+\end{equation}
+Function resets yaw $\gamma$ or roll $\alpha$ angle to initial position to keep degree of rotation matrix. Simpler but not fault tolerant solution is to keep angles $\alpha,\beta,\gamma, \in \left (  -\pi,\pi\right ]$ range.
+
+\subsection*{Transformation between coordinate systems}
+\noindent Polar coordinate system represents point in form of vector $[distance$, $angle_{horizontal}$, $angle_{vertical}]$, which is ideal for representation of LiDAR scanned point, because usually total point distance andpair of angles are returned. Using most common LiDAR with horizontal rotation $\theta$ and vertical mirror inclination $\varphi$, one can define planar coordinate $p_{planar} = [d_{xyz},\theta,\varphi]$ which is dual to Cartesian coordinate $p_{cartesian} = [x,y,z]$. If rotation angles are forced to stay as $\theta,\varphi\in(-\pi,\pi]$ transformation function is bijection.
+
+Transformation from planar to Cartesian representation is defined by following series of functions (\ref{eq:cpt01}, \ref{eq:cpt02},\ref{eq:cpt03}, \ref{eq:cpt04}).
+\begin{equation}\label{eq:cpt01}
+    d_{xy} = \cos\varphi.d_{xyz}
+\end{equation}
+\begin{equation}\label{eq:cpt02}
+    z = \sin\varphi.d_{xyz}
+\end{equation}
+\begin{equation}\label{eq:cpt03}
+    y = \sin\theta.d_{xy}
+\end{equation}
+\begin{equation}\label{eq:cpt04}
+    x = \cos\theta.d_{xy}
+\end{equation}
+Transformation from Cartesian to planar representation is defined by following series of functions (\ref{eq:cpt05}, \ref{eq:cpt06},\ref{eq:cpt07}, \ref{eq:cpt08}).
+\begin{equation}\label{eq:cpt05}
+    d_{xyz} = \sqrt{x^2+y^2+z^2}    
+\end{equation}
+\begin{equation}\label{eq:cpt06}
+    d_{xy} = \sqrt{x^2+y^2}    
+\end{equation}
+\begin{equation}\label{eq:cpt07}
+    \theta = \arctan\frac{y}{x}
+\end{equation}
+\begin{equation}\label{eq:cpt08}
+    \varphi= \arctan\frac{z}{d_{xy}}
+\end{equation}
+
+\begin{definition}{Global coordinate system $\mathscr{X}_\mathscr{G}$}\label{def:globalCoordinateSystem}
+    takes as center $c_{\mathscr{G}0}$ well known point (for example center of geo-reference model in GNSS systems) every reference distance, plane or angle is calculated taking this center to mind.
+\end{definition}
+\begin{definition}{Local coordinate system $\mathscr{X}_\mathscr{L}$}\label{def:localCoordinateSystem}
+    takes as center $c_{\mathscr{L}0}$ frame of vehicle and can be changing position and orientation in global coordinate frame $\mathscr{X}_\mathscr{G}$.
+\end{definition}
+\begin{definition}{Global position of planar obstacle $o_i\in\mathscr{O}_{3D}$.}\label{def:globalObstaclePosition3D}
+    Let $o_i = [d_o, \theta_o, \varphi_o]^T$ be planar position of obstacle $o_i$ in local coordinate frame of vehicle with global Cartesian position $[x,_v,y_v,z_v]^T$ and normalized orientation angles $[\alpha_v,\beta_v,\gamma_v]$.\\
+    Then Cartesian position of obstacle $oi$, $[x_o,y_o,z_o]^T$  in local coordinate frame is given by transformation functions $x_o$ (\ref{eq:cpt04}), $y_o$ (\ref{eq:cpt03}), $z_o$ (\ref{eq:cpt02}).\\ 
+    Global  position of planar obstacle $oi$, $[x_g,y_g,z_g]^T$ is given by following equation:
+    \begin{equation}
+        \begin{bmatrix}
+            x_g\\y_g\\z_g
+        \end{bmatrix}
+        =
+        \left [
+            R_{XYZ}(\alpha_v,\beta_v,\gamma_v)
+            \begin{bmatrix}
+                x_o\\y_o\\z_o
+            \end{bmatrix}
+            +
+            \begin{bmatrix}
+                x_v\\y_v\\z_v
+            \end{bmatrix}
+        \right ]
+    \end{equation}    
+\end{definition}
+\newpage
+\begin{definition}{Local position of global coordinate $[x_g,y_g,z_g]^T\in\R^3$.}\label{def:globalToLocal}
+    Let there be vehicle with global Cartesian position $[x,_v,y_v,z_v]^T$ and normalized orientation angles $[\alpha_v,\beta_v,\gamma_v]$. in global coordinate frame $\mathscr{X}_\mathscr{X}$.\\
+    Then local Cartesian coordinate position $[x_l,y_l,z_l]^T$ of point $[x_g,y_g,z_g]^T$ is given by following equation:
+    \begin{equation}
+        \begin{bmatrix}
+            x_l\\y_l\\z_l
+        \end{bmatrix}
+        =
+        \left [
+            R_{XYZ}(-\alpha_v,-\beta_v,-\gamma_v)
+            \left (
+            \begin{bmatrix}
+                x_g\\y_g\\z_g
+            \end{bmatrix}
+            -
+            \begin{bmatrix}
+                x_v\\y_v\\z_v
+            \end{bmatrix}
+            \right )
+        \right ]
+    \end{equation}
+    Local planar position is given as $[d_l, \theta_l,\varphi_l]$, where $d_l$ is given by (\ref{eq:cpt05}), $\theta_l$ is givent by (\ref{eq:cpt07}). $\varphi_l$ is given by (\ref{eq:cpt08}), where $[x_l,y_l,z_l]$ are used as local coordinates.
+\end{definition}
